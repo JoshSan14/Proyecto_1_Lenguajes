@@ -1,0 +1,109 @@
+<Window
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:SpotiCry.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:SpotiCry.Views"
+        xmlns:icons="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        x:Class="SpotiCry.Views.MainWindow"
+        Icon="/Assets/spoti.ico"
+        Title="SpotiCry"
+        Width="800"
+        Height="600"
+		WindowStartupLocation="CenterScreen"
+		CanResize="False"
+        Background="#36393e">
+	
+	<Window.Resources>
+		<Geometry x:Key="PreviousIconPath">M 14 18 V 6 L 7 12 L 14 18 M 4 6 H 5 V 18 H 3 V 6 Z</Geometry>
+		<Geometry x:Key="PlayIconPath">M 7.3 5.14 V 19.14 L 18.3 12.14 L 7.3 5.14 Z</Geometry>
+		<Geometry x:Key="PauseIconPath">M 7.9 5.775 a 0.825 0.825 90 0 1 0.825 0.825 v 13.2 a 0.825 0.825 90 0 1 -1.65 0 V 6.6 a 0.825 0.825 90 0 1 0.825 -0.825 z m 6.6 0 a 0.825 0.825 90 0 1 0.825 0.825 v 13.2 a 0.825 0.825 90 0 1 -1.65 0 V 6.6 a 0.825 0.825 90 0 1 0.825 -0.825 z</Geometry>
+		<Geometry x:Key="NextIconPath">M16,18H18V6H16M6,18L14.5,12L6,6V18Z</Geometry>
+		<Geometry x:Key="SpeakerIconPath">
+			M 9.69451 -3.1155 L 1.117497 4.3031 L -7.0 4.3031 L -7.0 13.84949 L 0.994504 13.84949 L 9.694501 21.375 L 9.694501 -3.1155 z
+		</Geometry>
+	</Window.Resources>
+
+	<DockPanel>
+
+		<!-- Panel inferior con controles de música -->
+		<Grid DockPanel.Dock="Bottom" Background="DarkCyan">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<!-- Botones de control -->
+			<StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10,0,0,0">
+				<Button x:Name="PreviousButton" Width="40" Height="40">
+					<!-- Icono anterior -->
+					<Path Fill="White" Data="{StaticResource PreviousIconPath}"/>
+				</Button>
+				<Button x:Name="PlayButton" Width="40" Height="40">
+					<!-- Icono play/pause -->
+					<Path x:Name="PlayPauseIcon" Fill="White" Data="{StaticResource PlayIconPath}" />
+				</Button>
+				<Button x:Name="NextButton" Width="40" Height="40">
+					<!-- Icono siguiente -->
+					<Path Fill="White" Data="{StaticResource NextIconPath}" />
+				</Button>
+			</StackPanel>
+
+			<!-- Barra de progreso y tiempo en el centro -->
+			<Grid Grid.Column="1" HorizontalAlignment="Center">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+
+				<TextBlock Grid.Row="0"
+						   x:Name="SongInfoText"
+						   Text=""
+						   Margin="10,10,10,0"
+						   VerticalAlignment="Center"
+						   FontSize="16"
+						   HorizontalAlignment="Center"
+						   TextWrapping="NoWrap"
+						   MaxWidth="400"/>
+
+				<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+					<Slider x:Name="ProgressBar" Width="200" />
+					<TextBlock x:Name="SongLengthText" Text="0:00" Margin="10,0" VerticalAlignment="Center"/>
+				</StackPanel>
+			</Grid>
+
+			<!-- Control de volumen a la derecha -->
+			<StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+				<Path Fill="White" Data="{StaticResource SpeakerIconPath}" Width="20" Height="20" VerticalAlignment="Center"/>
+				<Slider x:Name="VolumeSlider" Width="100" VerticalAlignment="Center" Margin="0,0,10,0" Value="50"/>
+			</StackPanel>
+		</Grid>
+
+
+		<!-- Panel lateral con opciones Songs y Playlists -->
+		<StackPanel DockPanel.Dock="Left" Width="110" Background="#2E2E2E">
+			<Button Content="Songs" FontSize="20" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch"/>
+			<Button Content="Playlists" FontSize="20" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch"/>
+		</StackPanel>
+
+		<!-- Panel superior con opciones -->
+		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="#2E2E2E">
+			<Button x:Name="yearFLT" Content="Order by year" Foreground="White" />
+			<Button x:Name="lengthFLT" Content="Order by length" Foreground="White" />
+			<Button x:Name="nameFLT" Content="Order by name" Foreground="White" />
+			<TextBox Watermark="Search music" Width="200" HorizontalAlignment="Right" />
+			<Button x:Name="RefreshButton" Content="Refresh" Foreground="White" Background="DarkCyan" Margin="40,0,10,0"/>
+			<Ellipse x:Name="StatusIndicator" Width="10" Height="10" Fill="Red" VerticalAlignment="Center" Margin="2,0,0,0"/>
+		</StackPanel>
+
+		<!-- Área central para mostrar canciones o playlists -->
+		<views:SongsView Name="SongsView"/>
+
+	</DockPanel>
+
+</Window>
